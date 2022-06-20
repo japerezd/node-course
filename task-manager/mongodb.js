@@ -15,6 +15,15 @@ MongoClient.connect(
 
     const db = client.db(databaseName);
 
+    // 3. delete in Mac
+    // db.collection('users').deleteMany({ age: 28 })
+    // .then(result => console.log(result))
+    // .catch(error => console.log(error))
+
+    db.collection('tasks').deleteOne({ description: 'Get the food' })
+    .then(result => console.log(result))
+    .catch(error => console.log(error))
+
     // TODO: 2. update in Mac
     // db.collection('users').updateOne(
     //   { _id: ObjectId('62afa1304a24cab46f200110') },
@@ -30,9 +39,9 @@ MongoClient.connect(
     //     console.log(error);
     //   });
 
-    db.collection('tasks').updateMany({ completed: false }, { $set: { completed: true } })
-    .then(result => { console.log(result) })
-    .catch(error => console.log(error))
+    // db.collection('tasks').updateMany({ completed: false }, { $set: { completed: true } })
+    // .then(result => { console.log(result) })
+    // .catch(error => console.log(error))
 
     // db.collection('users').findOne({ _id: ObjectId('62afcb96e76ed2d32f8762c2') }, (error, user) => {
     //   if (error) {
