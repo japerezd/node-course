@@ -1,15 +1,7 @@
-// const mongodb = require('mongodb');
-// const MongoClient = mongodb.MongoClient;
-// const ObjectID = mongodb.ObjectId;
-
 const { MongoClient, ObjectId } = require('mongodb')
 
 const connectionURL = 'mongodb://127.0.0.1:27017';
 const databaseName = 'task-manager';
-
-const id = new ObjectId()
-console.log(id);
-console.log(id.getTimestamp());
 
 MongoClient.connect(
   connectionURL,
@@ -22,6 +14,32 @@ MongoClient.connect(
     }
 
     const db = client.db(databaseName);
+
+    // db.collection('users').findOne({ _id: ObjectId('62afcb96e76ed2d32f8762c2') }, (error, user) => {
+    //   if (error) {
+    //     return console.log('Unable to fetch');
+    //   }
+
+    //   console.log(user);
+    // });
+
+    // returns a cursor
+    // db.collection('users').find({ age: 28 }).toArray((error, users) => {
+    //   console.log(users);
+    // });
+
+    // db.collection('tasks').findOne({ _id: ObjectId('62afa61557a05cc4f31f9143')}, (error, task) => {
+    //   if (error) {
+    //     return console.log('Unable to find task!');
+    //   }
+    //   console.log(task);
+    // })
+
+    db.collection('tasks').find({ completed: false }).toArray((error, tasks) => {
+      console.log(tasks);
+    })
+
+    // TODO: to execute the following in Mac
     // db.collection('users').insertOne({
     //   _id: id, // not necessary to put, but it's possible
     //   name: 'Vikram',
