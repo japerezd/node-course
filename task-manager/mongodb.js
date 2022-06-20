@@ -1,4 +1,4 @@
-const { MongoClient, ObjectId } = require('mongodb')
+const { MongoClient, ObjectId } = require('mongodb');
 
 const connectionURL = 'mongodb://127.0.0.1:27017';
 const databaseName = 'task-manager';
@@ -14,6 +14,25 @@ MongoClient.connect(
     }
 
     const db = client.db(databaseName);
+
+    // TODO: 2. update in Mac
+    // db.collection('users').updateOne(
+    //   { _id: ObjectId('62afa1304a24cab46f200110') },
+    //   {
+    //     $set: {
+    //       name: 'Gice',
+    //     },
+    //   }
+    // ).then((result) => {
+    //     console.log(result);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
+
+    db.collection('tasks').updateMany({ completed: false }, { $set: { completed: true } })
+    .then(result => { console.log(result) })
+    .catch(error => console.log(error))
 
     // db.collection('users').findOne({ _id: ObjectId('62afcb96e76ed2d32f8762c2') }, (error, user) => {
     //   if (error) {
@@ -35,11 +54,11 @@ MongoClient.connect(
     //   console.log(task);
     // })
 
-    db.collection('tasks').find({ completed: false }).toArray((error, tasks) => {
-      console.log(tasks);
-    })
+    // db.collection('tasks').find({ completed: false }).toArray((error, tasks) => {
+    //   console.log(tasks);
+    // })
 
-    // TODO: to execute the following in Mac
+    // TODO: 1. to execute the following in Mac
     // db.collection('users').insertOne({
     //   _id: id, // not necessary to put, but it's possible
     //   name: 'Vikram',
