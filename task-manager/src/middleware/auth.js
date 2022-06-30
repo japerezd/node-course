@@ -12,6 +12,7 @@ const auth = async (req, res, next) => {
     }
 
     // save it to user to access it later on
+    req.token = token;
     req.user = user;
     next();
     console.log(token);
