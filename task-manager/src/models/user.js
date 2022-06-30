@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema({
 
   email: {
     type: String,
+    unique: true,
     required: true,
     trim: true,
     lowercase: true,
@@ -44,7 +45,24 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-// What we wanna do before save it into the database
+
+userSchema.statics.findByCredentials = async (email, password) => {
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    throw new Error('Unable to login');
+  }
+
+  const isMatch = await bcrypt.compare(password, user.password);
+
+  if (!isMatch) {
+    throw new Error('Unable to login');
+  }
+
+  return user;
+}
+
+// What we wanna do before save it into the database. Hash password
 userSchema.pre('save', async function (next) {
   const user = this;
 
@@ -55,6 +73,10 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
+
 const User = mongoose.model('User', userSchema);
+
+// userSchema.index({ email: 1 }, { unique: true })
+User.createIndexes();
 
 module.exports = User;
