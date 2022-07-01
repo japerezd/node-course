@@ -52,7 +52,9 @@ const userSchema = new mongoose.Schema({
       required: true,
     } 
   }]
-});
+}, { 
+  timestamps: true
+ });
 
 // Previously getPublicProfile - with toJSON it hides password and tokens for all routes
 userSchema.methods.toJSON = function () {
