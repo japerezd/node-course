@@ -91,6 +91,14 @@ userSchema.statics.findByCredentials = async (email, password) => {
   return user;
 }
 
+// relationship between task and user; tasks <- name we want to give it
+// is just a reference this relationship
+userSchema.virtual('tasks',  {
+  ref: 'Task',
+  localField: '_id',
+  foreignField: 'owner',
+});
+
 // What we wanna do before save it into the database. Hash password
 userSchema.pre('save', async function (next) {
   const user = this;
