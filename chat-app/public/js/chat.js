@@ -9,10 +9,14 @@ const $messages = document.querySelector('#messages');
 
 // templates
 const messageTemplate = document.querySelector('#message-template').innerHTML;
-const locationMessageTemplate = document.querySelector('#location-message-template').innerHTML;
+const locationMessageTemplate = document.querySelector(
+  '#location-message-template'
+).innerHTML;
 
 // Options
-const { username, room } = Qs.parse(location.search, { ignoreQueryPrefix: true })
+const { username, room } = Qs.parse(location.search, {
+  ignoreQueryPrefix: true,
+});
 
 socket.on('message', (message) => {
   console.log(message);
@@ -23,14 +27,14 @@ socket.on('message', (message) => {
   $messages.insertAdjacentHTML('beforeend', html);
 });
 
-socket.on('locationMessage', message => {
+socket.on('locationMessage', (message) => {
   console.log(message);
   const html = Mustache.render(locationMessageTemplate, {
     url: message.url,
     createdAt: moment(message.createdAt).format('h:mm a'),
   });
   $messages.insertAdjacentHTML('beforeend', html);
-})
+});
 
 $messageForm.addEventListener('submit', (e) => {
   e.preventDefault();
@@ -59,7 +63,6 @@ $sendLocationButton.addEventListener('click', () => {
   $sendLocationButton.setAttribute('disabled', 'disabled');
 
   navigator.geolocation.getCurrentPosition((position) => {
-
     const {
       coords: { latitude, longitude },
     } = position;
@@ -70,4 +73,9 @@ $sendLocationButton.addEventListener('click', () => {
   });
 });
 
-socket.emit('join', { username, room });
+socket.emit('join', { username, room }, (error) => {
+  if (error) {
+    alert(error);
+    location.href = '/';
+  }
+});
